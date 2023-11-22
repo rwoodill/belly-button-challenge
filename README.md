@@ -1,6 +1,9 @@
 # belly-button-challenge
  Module 14
+ 
  Authored by Rachel Woodill
+
+ Deployment on github pages here: https://rwoodill.github.io/belly-button-challenge/
 
 # File Locations
 

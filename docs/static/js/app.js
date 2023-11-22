@@ -31,6 +31,7 @@ function init(){
         // build the plots
         getData(sampleOne);
         createBarChart(sampleOne);
+        createBubbleChart(sampleOne);
     });
 }; // end of function "init" 
 
@@ -106,6 +107,52 @@ function createBarChart(sample){
     });
 }; // end of function "createBarChart"
 
+// ------------------------------------------------------------------------------
+// function that builds the bubble chart
+// ------------------------------------------------------------------------------
+function createBubbleChart(sample){
+    // retrieve the data
+    d3.json(url).then((data) => {
+        // retrieve all sample data
+        let sampleInfo = data.samples;
+        // filter based on the value of the sample
+        let value = sampleInfo.filter(result => result.id == sample);
+        // get the first index from the array
+        let valueData = value[0];
+
+        // get the otu_ids, lables, and sample values
+        let otuIds = valueData.otu_ids;
+        let otuLabels = valueData.otu_labels;
+        let sampleValues = valueData.sample_values;  
+
+        //console.log(otuIds,otuLabels,sampleValues);
+
+        // set up the trace for bubble chart
+        let trace2 = {
+            x: otuIds,
+            y: sampleValues,
+            text: otuLabels,
+            mode: "markers",
+            marker: {
+                size: sampleValues,
+                color: otuIds,
+                colorscale: "Earth"
+            }
+        };
+
+        // set up the layout
+        let layout = {
+            title: "Bacteria Per Sample",
+            hovermode: "closest",
+            xaxis: {title: "OTU ID"}
+        };
+
+        // use plotly to plot the bubble chart
+        Plotly.newPlot("bubble", [trace2], layout)
+
+    });
+}; // end of function "createBubbleChart"
+
 
 // ------------------------------------------------------------------------------
 // function that updates the page when the dropdown menu is changed
@@ -114,6 +161,7 @@ function optionChanged(value){
     //console.log(value);
     getData(value);
     createBarChart(value);
+    createBubbleChart(value);
 }; // end of function "optionChanged"
 
 
